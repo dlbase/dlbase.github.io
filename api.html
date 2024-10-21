@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Database</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>API Accès</h1>
+    <p>Utilisez l'URL suivante pour accéder à vos données :</p>
+    <code id="api-url"></code>
+  </div>
+
+  <script>
+    const dbName = new URLSearchParams(window.location.search).get('db');
+    if (dbName) {
+      document.getElementById('api-url').textContent = `https://dlbase.github.io/api/${dbName}`;
+    } else {
+      document.getElementById('api-url').textContent = "Base de données non spécifiée.";
+    }
+  </script>
+</body>
+</html>

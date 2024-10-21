@@ -3,22 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tableau de Bord</title>
+  <title>Tableau de Bord - DBHost</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <h1>Tableau de Bord</h1>
-    <button onclick="logout()">Se déconnecter</button>
-
-    <h2>Créer une nouvelle base de données</h2>
+    <h1>Vos Bases de Données</h1>
     <input type="text" id="dbName" placeholder="Nom de la base de données">
     <button onclick="createDatabase()">Créer la base de données</button>
-    
-    <h2>Vos bases de données</h2>
     <ul id="dbList"></ul>
   </div>
 
-  <script src="dashboard.js"></script>
+  <script>
+    async function createDatabase() {
+      const dbName = document.getElementById('dbName').value;
+      const token = localStorage.getItem('token');
+
+      const response = await fetch('/api/db/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ dbName }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        displayDatabases();
+      } else {
+        alert('Erreur : ' + data.message);
+      }
+    }
+
+    async function displayDatabases() {
+      const token = localStorage.getItem('token');
+      const response = await fetch('/api/db/list', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await response.json();
+
+      const dbList = document.getElementById('dbList');
+      dbList.innerHTML = '';
+      data.databases.forEach(db => {
+        const li = document.createElement('li');
+        li.textContent = `${db.name} (API: ${db.apiUrl})`;
+        dbList.appendChild(li);
+      });
+    }
+
+    displayDatabases();
+  </script>
 </body>
 </html>

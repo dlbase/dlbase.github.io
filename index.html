@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DLBase - Hébergement de Bases de Données</title>
+  <title>DBHost - Connexion / Inscription</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <h1>Bienvenue sur DLBaset</h1>
+    <h1>Connexion / Inscription</h1>
     <form id="login-form">
       <input type="email" id="email" placeholder="Email" required>
       <input type="password" id="password" placeholder="Mot de passe" required>
@@ -23,21 +23,25 @@
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (data.success) {
-        localStorage.setItem('token', data.token);
-        window.location.href = 'dashboard.html';
-      } else {
-        document.getElementById('error-msg').textContent = data.message;
+        if (data.success) {
+          localStorage.setItem('token', data.token);
+          window.location.href = 'dashboard.html';
+        } else {
+          document.getElementById('error-msg').textContent = data.message;
+        }
+      } catch (error) {
+        document.getElementById('error-msg').textContent = 'Erreur de connexion.';
       }
     });
   </script>

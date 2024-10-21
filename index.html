@@ -3,24 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hébergement de Database Gratuit</title>
+  <title>DLBase - Hébergement de Bases de Données</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <h1>Bienvenue sur DLBase</h1>
-    <p>Créez et gérez vos bases de données gratuitement !</p>
-    
-    <!-- Formulaire de connexion -->
-    <div id="auth">
-      <h2>Connexion / Inscription</h2>
-      <input type="text" id="email" placeholder="Email">
-      <input type="password" id="password" placeholder="Mot de passe">
-      <button onclick="login()">Se connecter / S'inscrire</button>
-    </div>
+    <h1>Bienvenue sur DLBaset</h1>
+    <form id="login-form">
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Mot de passe" required>
+      <button type="submit">Connexion / Inscription</button>
+    </form>
     <p id="error-msg"></p>
   </div>
 
-  <script src="auth.js"></script>
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        localStorage.setItem('token', data.token);
+        window.location.href = 'dashboard.html';
+      } else {
+        document.getElementById('error-msg').textContent = data.message;
+      }
+    });
+  </script>
 </body>
 </html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hébergement de Database Gratuit</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Bienvenue sur DLBase</h1>
+    <p>Créez et gérez vos bases de données gratuitement !</p>
+    
+    <!-- Formulaire de connexion -->
+    <div id="auth">
+      <h2>Connexion / Inscription</h2>
+      <input type="text" id="email" placeholder="Email">
+      <input type="password" id="password" placeholder="Mot de passe">
+      <button onclick="login()">Se connecter / S'inscrire</button>
+    </div>
+    <p id="error-msg"></p>
+  </div>
+
+  <script src="auth.js"></script>
+</body>
+</html>
